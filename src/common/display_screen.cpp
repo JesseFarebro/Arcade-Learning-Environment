@@ -81,7 +81,7 @@ void DisplayScreen::display_screen() {
 
   // Wait a while, calibrating so that the delay remains the same
   Uint32 newTime = SDL_GetTicks();
-  Uint32 delta = newTime - min(last_frame_time, newTime);
+  Uint32 delta = newTime - std::min(last_frame_time, newTime);
 
   if (delta < delay_msec) {
     SDL_Delay(delay_msec - delta);
