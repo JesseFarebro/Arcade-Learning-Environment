@@ -9,6 +9,7 @@ option(BUILD_EXAMPLES "Build Example Agents" ON)
 option(BUILD_CPP_LIB "Build C++ Shared Library" ON)
 option(BUILD_CLI "Build ALE Command Line Interface" ON)
 option(BUILD_C_LIB "Build ALE C Library (needed for Python interface)" ON)
+option(BUILD_PYTHON_LIB "Build Python Interface" ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC -O3 -fomit-frame-pointer -D__STDC_CONSTANT_MACROS")
 
@@ -134,6 +135,27 @@ include_directories(
   ${SOURCE_DIR}/external
   ${SOURCE_DIR}/external/TinyMT
 )
+
+if(BUILD_PYTHON_LIB)
+  include(FetchContent)
+  FetchContent_Declare(
+    pybind11_external
+    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_TAG v2.4.3
+  )
+
+  FetchContent_GetProperties(pybind11_external)
+  if(NOT pybind11_external_POPULATED)
+    message(STATUS "Fetch pybind11 for python-binding")
+    FetchContent_Populate(pybind11_external)
+    add_subdirectory(${pybind11_external_SOURCE_DIR})
+  endif()
+
+  pybind11_add_module(ale-py ${SOURCE_DIR}/ale_python_interface.cpp ${SOURCE_DIR}/ale_interface.cpp ${SOURCES})
+  set_target_properties(ale-py PROPERTIES OUTPUT_NAME ale_py_pybind)
+  set_target_properties(ale-py PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  target_link_libraries(ale-py ${LINK_LIBS})
+endif()
 
 if(NOT BUILD_CPP_LIB AND BUILD_EXAMPLES)
   set(BUILD_CPP_LIB ON)
