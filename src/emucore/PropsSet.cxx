@@ -23,7 +23,7 @@
 #include "DefProps.hxx"
 #include "Props.hxx"
 #include "PropsSet.hxx"
-#include "bspf.hxx"
+#include "bspf/bspf.hxx"
 using namespace std;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

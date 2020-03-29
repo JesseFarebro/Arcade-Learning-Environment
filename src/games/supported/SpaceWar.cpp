@@ -25,7 +25,7 @@
 
 #include "SpaceWar.hpp"
 
-#include "../RomUtils.hpp"
+#include "games/RomUtils.hpp"
 
 namespace ale {
 

@@ -25,7 +25,7 @@
 #endif
 using namespace std;
 
-#include "../../../common/Log.hpp"
+#include "common/Log.hpp"
 
 #define debugStream ale::Logger::Info
 

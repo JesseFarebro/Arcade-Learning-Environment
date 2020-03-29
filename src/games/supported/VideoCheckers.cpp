@@ -27,7 +27,7 @@
 
 #include "VideoCheckers.hpp"
 
-#include "../RomUtils.hpp"
+#include "games/RomUtils.hpp"
 
 namespace {
 void process_board_state(unsigned char state, unsigned char& num_black_pieces,

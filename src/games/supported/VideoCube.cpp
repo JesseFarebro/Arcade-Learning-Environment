@@ -28,7 +28,7 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "../RomUtils.hpp"
+#include "games/RomUtils.hpp"
 
 namespace ale {
 

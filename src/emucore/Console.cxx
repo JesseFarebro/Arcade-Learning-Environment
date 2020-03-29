@@ -48,7 +48,7 @@
 #include "OSystem.hxx"
 //ALE #include "Menu.hxx"
 //ALE #include "CommandMenu.hxx"
-#include "Version.hxx"
+#include "common/Version.hxx"
 #ifdef DEBUGGER_SUPPORT
   #include "Debugger.hxx"
 #endif
@@ -57,7 +57,7 @@
   #include "CheatManager.hxx"
 #endif
 using namespace std;
-#include "../common/Log.hpp"
+#include "common/Log.hpp"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Console::Console(OSystem* osystem, Cartridge* cart, const Properties& props)

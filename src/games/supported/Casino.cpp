@@ -25,8 +25,8 @@
 
 #include "Casino.hpp"
 
-#include "../RomUtils.hpp"
-#include "../../common/Constants.h"
+#include "games/RomUtils.hpp"
+#include "common/Constants.h"
 
 namespace ale {
 

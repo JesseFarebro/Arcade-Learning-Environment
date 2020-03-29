@@ -16,8 +16,8 @@
 // $Id: SettingsWin32.cxx,v 1.26 2007/01/01 18:04:56 stephena Exp $
 //============================================================================
 
-#include "bspf.hxx"
-#include "Settings.hxx"
+#include "emucore/bspf/bspf.hxx"
+#include "emucore/Settings.hxx"
 #include "SettingsWin32.hxx"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
