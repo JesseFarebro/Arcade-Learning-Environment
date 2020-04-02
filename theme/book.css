@@ -1,0 +1,22 @@
+#theme-toggle, #theme-list  {
+  display: none;
+}
+
+.right-buttons {
+  margin-left: auto;
+}
+
+.sidebar-scrollbox {
+  position: relative !important;
+  margin: 10px;
+}
+
+
+.chapter > li:first-of-type {
+  display: none;
+}
+
+.chapter li {
+  font-size: 1.5rem;
+  font-weight: 600;
+}

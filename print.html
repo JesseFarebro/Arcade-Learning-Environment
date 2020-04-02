@@ -1,0 +1,672 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Arcade Learning Environment</title>
+        
+        <meta name="robots" content="noindex" />
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Arcade Learning Environment (ALE) -- a platform for AI research.">
+        <meta name="author" content="Marlos C. Machado, Matthew Hausknecht, Marc G. Bellemare, Jesse Farebrother">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/book.css">
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!--<div style="margin: 5px 15px;">
+                <img src="static/ale.gif" style="height:50px;">
+            </div>-->
+            <div style="margin:5px 20px;">
+                <a href="/" style="text-decoration: none"><h1 class="bold" style="font-size: 20px; color: #000; font-weight: bold; text-decoration: none">The Arcade Learning Environment </h1></a>
+            </div>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="expanded "><a href="index.html"></a></li><li class="expanded "><a href="getting-started.html">Getting started</a></li><li><ol class="section"><li class="expanded "><a href="cpp-agent.html">C++ Agent</a></li><li class="expanded "><a href="python-agent.html">Python Agent</a></li></ol></li><li class="expanded "><a href="environment.html">Environment</a></li><li class="expanded "><a href="games.html">Games</a></li><li class="expanded "><a href="visualization.html">Visualization</a></li><li class="expanded "><a href="faq.html">FAQ</a></li><li class="spacer"></li><li class="expanded affix "><a href="citing.html">Citing</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/mgbellemare/Arcade-Learning-Environment" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#the-arcade-learning-environment-ale" id="the-arcade-learning-environment-ale">The Arcade Learning Environment (ALE)</a></h1>
+<p>&nbsp;</p>
+<img src="./static/ale-animation.webp" align="center" title="ALE Games" />
+<p>The Arcade Learning Environment (ALE) is a framework that allows researchers and hobbyists to develop AI agents for Atari 2600 games. It is built on top of the Atari 2600 emulator <a href="https://github.com/stella-emu/stella">Stella</a> and separates the details of emulation from agent design.</p>
+<p>For an overview of our goals for the ALE read <a href="https://jair.org/index.php/jair/article/view/10819">The Arcade Learning Environment: An Evaluation Platform for General Agents</a>. If you use ALE in your research, we ask that you please <a href="./citing.html">cite this paper</a> in reference to the environment.</p>
+<h1><a class="header" href="#installation" id="installation">Installation</a></h1>
+<h2><a class="header" href="#python-interface" id="python-interface">Python Interface</a></h2>
+<p>The Python interface <code>ale-py</code> supports the follow 64 bit systems running Python 3.5 or newer:</p>
+<ul>
+<li>Windows 7+</li>
+<li>macOS 10.9+</li>
+<li>Linux Distros supporting <a href="https://www.python.org/dev/peps/pep-0571/">manylinux2010</a></li>
+</ul>
+<p>To install the Python interface from PyPi simply run:</p>
+<pre><code class="language-bash">pip install ale-py
+</code></pre>
+<h2><a class="header" href="#c-interface" id="c-interface">C++ Interface</a></h2>
+<p>The C++ library requires:</p>
+<ul>
+<li>A C++11 compiler</li>
+<li>CMake 3.14+</li>
+<li>zlib</li>
+<li>(Optional) SDL 1.X for display/audio support </li>
+</ul>
+<p>SDL support allows for displaying the console’s screen and enabling audio output. For example, <em>without</em> SDL support you’ll still be able to train your agents, but you won’t be able to visualize the resulting policy. It might be preferable to disable SDL support when compiled on a cluster but enable SDL locally. Note: SDL support defaults to <strong>OFF</strong>.</p>
+<p>Here’s a minimal example of installing these dependencies and building the C++ library:</p>
+<h3><a class="header" href="#macos" id="macos">macOS</a></h3>
+<p>To install the dependencies on macOS simply run:</p>
+<pre><code class="language-bash">brew install cmake zlib
+
+# If you want SDL support
+brew install sdl
+</code></pre>
+<p>To build and install the C++ library simply run:</p>
+<pre><code class="language-bash">mkdir build &amp;&amp; cd build
+cmake ../ \
+    -DCMAKE_BUILD_TYPE=Release \ 
+    -DUSE_SDL=OFF # Switch to ON for SDL support
+
+cmake --build . --target install
+</code></pre>
+<h3><a class="header" href="#ubuntu" id="ubuntu">Ubuntu</a></h3>
+<p>To install the dependencies on Ubuntu simply run:</p>
+<pre><code class="language-bash">sudo apt-get install cmake zlib1g-dev
+
+# If you want SDL support
+sudo apt-get install libsdl1.2-dev
+</code></pre>
+<p>To build the C++ library simply run:</p>
+<pre><code class="language-bash">mkdir build &amp;&amp; cd build
+cmake ../ \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DUSE_SDL=OFF # Switch to ON for SDL support
+
+cmake --build . --target install
+</code></pre>
+<h3><a class="header" href="#windows" id="windows">Windows</a></h3>
+<p>For this example we assume you’ve installed <a href="https://chocolatey.org/">Chocolatey</a> and <a href="https://docs.microsoft.com/en-us/cpp/build/vcpkg">vcpkg</a>.</p>
+<pre><code class="language-bash">choco install cmake
+vcpkg install zlib:x64-windows
+
+# If you want SDL support
+vcpkg install sdl1:x64-windows
+</code></pre>
+<p>To build and install the C++ library simply run:</p>
+<pre><code class="language-bash">mkdir build &amp;&amp; cd build
+cmake ../ `
+    -DCMAKE_TOOLCHAIN_FILE=&quot;$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake&quot; `
+    -DVCPKG_TARGET_TRIPLET=&quot;x64-windows&quot; `
+    -DCMAKE_BUILD_TYPE=Release `
+    -DUSE_SDL=OFF # Switch to ON for SDL support
+
+cmake --build .
+</code></pre>
+<p><strong>TODO: Write windows installation instructions</strong></p>
+<h1><a class="header" href="#c-agent" id="c-agent">C++ Agent</a></h1>
+<p>The shared library interface is the simplest way to implement a C++ agent for the Arcade Learning Environment (ALE).
+This interface allows agents to directly access ALE via a class called
+<code>ALEInterface</code>, defined in <code>ale_interface.hpp</code>. Example code detailing a simple random agent is provided under <code>examples/cpp-agent</code>.</p>
+<p>To instantiate the Arcade Learning Environment it is enough to write:</p>
+<pre><code class="language-cpp">ale::ALEInterface ale;
+</code></pre>
+<p>Once the environment is initialized, it is now possible to set its arguments. This is done with the 
+functions <code>setBool()</code>, <code>setInt()</code>, <code>setFloat()</code>. The complete list of flags is available in <strong>TODO LINK TO  ARGS</strong>. For example, to set the environment’s seed we write:</p>
+<pre><code class="language-cpp">ale.setInt(&quot;random_seed&quot;, 123);
+</code></pre>
+<p>Finally, after setting the desired environment parameters we now load the game ROM by providing its filename to the <code>loadROM</code> method:</p>
+<pre><code class="language-cpp">ale.loadROM(&quot;asterix.bin&quot;);
+</code></pre>
+<p>There are two different action sets provided by ALE: the “legal” set and the “minimal”
+set. Save for a few rare exceptions, the legal action set consists of all 18 actions for all games, including duplicates and actions with no effect. On the other hand, the minimal action set for a game contains only 
+the actions that have some effect on that game. The <code>getLegalActionSet</code> and <code>getMinimalActionSet</code> methods provide the desired action sets:</p>
+<pre><code class="language-cpp">ale::ActionVect legal_actions = ale.getLegalActionSet();
+</code></pre>
+<p>Taking an action is done by calling the function <code>act()</code> passing an object of <code>Action</code> as a parameter:</p>
+<pre><code class="language-cpp">ale::Action a = legal_actions[rand() % legal_actions.size()];
+float reward = ale.act(a);
+</code></pre>
+<p>Finally, one can check whether the episode has terminated using the function <code>ale.game_over()</code>. With these functions one can already implement a very simple agent that plays randomly for one episode:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;ale_interface.hpp&gt;
+
+int main(int argc, char** argv) {
+    if (argc &lt; 2) {
+        std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; rom_file&quot; &lt;&lt; std::endl;
+        return 1;
+    }
+
+    ale::ALEInterface ale;
+    ale.setInt(&quot;random_seed&quot;, 123);
+    ale.loadROM(argv[1]);
+
+    ale::ActionVect legal_actions = ale.getLegalActionSet();
+
+    float totalReward = 0.0;
+    while (!ale.game_over()) {
+        Action a = legal_actions[std::rand() % legal_actions.size()];    
+        float reward = ale.act(a);
+        totalReward += reward;
+
+        std::cout &lt;&lt; &quot;The episode ended with score: &quot; &lt;&lt; totalReward 
+            &lt;&lt; std::endl;
+    }
+
+    return 0;
+}
+</code></pre>
+<p>Compilling with the shared library can be done by appending <code>-lale</code> or by using <code>find_package(ale)</code> and linking to the cmake target <code>ale::ale-lib</code>. See <a href="https://github.com/mgbellemare/Arcade-Learning-Environment/tree/master/examples/cpp-agent">examples/cpp-agent</a> for a detailed example, including compilation. If any errors arise make sure to check out the <a href="./faq.html">FAQ</a>.</p>
+<h1><a class="header" href="#python-agent" id="python-agent">Python Agent</a></h1>
+<p>Aside from a few minor differences, the Python interface mirrors the C++ interface. For example, the following implements a random agent: </p>
+<pre><code class="language-python">import sys
+from random import randrange
+from ale_py import ALEInterface
+
+def main(rom_file):
+    ale = ALEInterface()
+    ale.setInt('random_seed', 123)
+    ale.loadROM(rom_file)
+
+    # Get the list of legal actions
+    legal_actions = ale.getLegalActionSet()
+    num_actions = len(legal_actions)
+
+    total_reward = 0
+    while not ale.game_over():
+      a = legal_actions[randrange(num_actions)]
+      reward = ale.act(a)
+      total_reward += reward
+
+    print(f'Episode ended with score: {total_reward}')
+
+if __name__ == '__main__':
+    if len(sys.argv) &lt; 2:
+      print(f&quot;Usage: {sys.argv[0]} rom_file&quot;)
+      sys.exit()
+
+    rom_file = sys.argv[1]
+    main(rom_file)
+</code></pre>
+<h1><a class="header" href="#environment-specifications" id="environment-specifications">Environment Specifications</a></h1>
+<p>This section provides additional information regarding the environment implemented in ALE.</p>
+<h2><a class="header" href="#available-actions" id="available-actions">Available Actions</a></h2>
+<p>The following regular actions are defined by the <code>Action</code> enum in <a href="https://github.com/mgbellemare/Arcade-Learning-Environment/blob/master/src/common/Constants.h"><code>common/Constants.h</code></a>. These can also be accessed in Python through the enum object <code>ale_py.Action</code>. These actions are interpreted by ALE as follows:</p>
+<table><thead><tr><th>Index</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<tr><td>0</td><td><strong><code>NOOP</code></strong></td><td>No operation, do nothing.</td></tr>
+<tr><td>1</td><td><strong><code>FIRE</code></strong></td><td>Press the fire button without updating the joystick position</td></tr>
+<tr><td>2</td><td><strong><code>UP</code></strong></td><td>Apply a \( \Delta \)-movement upwards on the joystick</td></tr>
+<tr><td>3</td><td><strong><code>RIGHT</code></strong></td><td>Apply a \( \Delta \)-movement rightward on the joystick</td></tr>
+<tr><td>4</td><td><strong><code>LEFT</code></strong></td><td>Apply a \( \Delta \)-movement leftward on the joystick</td></tr>
+<tr><td>5</td><td><strong><code>DOWN</code></strong></td><td>Apply a \( \Delta \)-movement downward on the joystick</td></tr>
+<tr><td>6</td><td><strong><code>UPRIGHT</code></strong></td><td>Execute <strong><code>UP</code></strong> and <strong><code>RIGHT</code></strong></td></tr>
+<tr><td>7</td><td><strong><code>UPLEFT</code></strong></td><td>Execute <strong><code>UP</code></strong> and <strong><code>LEFT</code></strong></td></tr>
+<tr><td>8</td><td><strong><code>DOWNRIGHT</code></strong></td><td>Execute <strong><code>DOWN</code></strong> and <strong><code>RIGHT</code></strong></td></tr>
+<tr><td>9</td><td><strong><code>DOWNLEFT</code></strong></td><td>Execute <strong><code>DOWN</code></strong> and <strong><code>LEFT</code></strong></td></tr>
+<tr><td>10</td><td><strong><code>UPFIRE</code></strong></td><td>Execute <strong><code>UP</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>11</td><td><strong><code>RIGHTFIRE</code></strong></td><td>Execute <strong><code>RIGHT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>12</td><td><strong><code>LEFTFIRE</code></strong></td><td>Execute <strong><code>LEFT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>13</td><td><strong><code>DOWNFIRE</code></strong></td><td>Execute <strong><code>DOWN</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>14</td><td><strong><code>UPRIGHTFIRE</code></strong></td><td>Execute <strong><code>UP</code></strong> and <strong><code>RIGHT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>15</td><td><strong><code>UPLEFTFIRE</code></strong></td><td>Execute <strong><code>UP</code></strong> and <strong><code>LEFT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>16</td><td><strong><code>DOWNRIGHTFIRE</code></strong></td><td>Execute <strong><code>DOWN</code></strong> and <strong><code>RIGHT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>17</td><td><strong><code>DOWNLEFTFIRE</code></strong></td><td>Execute <strong><code>DOWN</code></strong> and <strong><code>LEFT</code></strong> and <strong><code>FIRE</code></strong></td></tr>
+<tr><td>40</td><td><strong><code>RESET</code></strong><sup class="footnote-reference"><a href="#1">1</a></sup></td><td>Toggles the Atari 2600 reset switch, <strong>not</strong> used for resetting the environment</td></tr>
+</tbody></table>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Note that the <strong><code>RESET</code></strong> action toggles the Atari 2600 reset switch, rather than reset the 
+environment, and as such is ignored by most interfaces.</p>
+</div>
+<p>Note: There are two main types of controllers on the Atari 2600 console. The <a href="https://en.wikipedia.org/wiki/Atari_CX40_joystick">joystick controller</a> and the <a href="https://en.wikipedia.org/wiki/Paddle_(game_controller)">paddle controller</a>. For paddle controllers all <strong><code>*RIGHT*</code></strong> actions correspond to a \( \Delta \)-movment to the right on the wheel, and all <strong><code>*LEFT*</code></strong> actions correspond to a \( \Delta \)-movement to the left.</p>
+<h2><a class="header" href="#terminal-states" id="terminal-states">Terminal States</a></h2>
+<p>Once the end of episode is reached (a terminal state in RL terminology), no further emulation 
+takes place until the appropriate reset command is sent. This command is distinct from the Atari 
+2600 reset. This “system reset” avoids odd situations where the player can reset the game
+through button presses, or where the game normally resets itself after a number of frames. This 
+makes for a cleaner environment interface. With the exception of the RL-Glue interface, which 
+automatically resets the environment, the interfaces described here all provide a system reset
+command or method.</p>
+<h2><a class="header" href="#color-averaging" id="color-averaging">Color Averaging</a></h2>
+<p>Many Atari 2600 games display objects on alternating frames (sometimes even less frequently).
+This can be an issue for agents that do not consider the whole screen history.
+By default, <em>color averaging</em> is <strong>not</strong> enabled, that is, the environment output is the actual frame from the emulator.
+This behaviour can be turned on using <code>setBool</code> with the <code>color_averaging</code> key.</p>
+<h2><a class="header" href="#action-repeat-stochasticity" id="action-repeat-stochasticity">Action Repeat Stochasticity</a></h2>
+<p>Beginning with ALE 0.5.0, there is now an option (enabled by default) to add 
+<em>action repeat stochasticity</em> to the environment. With probability \(p\) (default: \(p = 0.25\)),
+the previously executed action is executed again during the next frame, ignoring the agent’s
+actual choice. This value can be modified using the option <code>action_repeat_probability</code>.
+The default value was chosen as the highest value for which human play-testers
+were unable to detect any delay or control lag. (<a href="environment.html#references-machado18">Machado et al. 2018</a>).</p>
+<p>The motivation for introducing action repeat stochasticity was to help separate <em>trajectory optimization</em> research from <em>robust controller optimization</em>, the latter often being the 
+desired outcome in reinforcement learning (RL). We strongly encourage RL researchers to use 
+the default stochasticity level in their agents, and clearly report the setting used.</p>
+<h2><a class="header" href="#minimal-action-set" id="minimal-action-set">Minimal Action Set</a></h2>
+<p>It may sometimes be convenient to restrict the agent to a smaller action set. This can be
+accomplished by querying the <code>RomSettings</code> class using the method 
+<code>getMinimalActionSet</code>. This then returns a set of actions judged “minimal” to play a given
+game. Due to the potentially high impact of this setting on performance, we encourage researchers
+to clearly report the method used in their experiments.</p>
+<h2><a class="header" href="#modes-and-difficulties" id="modes-and-difficulties">Modes and Difficulties</a></h2>
+<p>ALE 0.6.0 introduces modes and difficulties, which can be set using the relevant methods <code>setMode</code>, <code>setDifficulty</code>. These introduce a whole range of new environments. For more details, see <a href="environment.html#references-machado18">Machado et al. 2018</a>.</p>
+<h2><a class="header" href="#references" id="references">References</a></h2>
+<p><sup><a name="references-machado18">1</a></sup> <small><strong>Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents</strong></small>
+<small>M. C. Machado, M. G. Bellemare, E. Talvitie, J. Veness, M. J. Hausknecht, M. Bowling., Journal of Artificial Intelligence Research, Volume 61, pages 523-562, 2018. URL: <a href="https://jair.org/index.php/jair/article/view/11182">https://jair.org/index.php/jair/article/view/11182</a></small></p>
+<h1><a class="header" href="#supported-games" id="supported-games">Supported Games</a></h1>
+<p>We provide a table of all the supported games in the ALE, the number of modes, difficulties. To get more information about each game, as well as the various modes/difficulties you can click on each game’s name to be brought to AtariAge where you can find this information.</p>
+<hr />
+<p>&nbsp;</p>
+<table><thead><tr><th>Name</th><th># Modes</th><th># Difficultie</th></tr></thead><tbody>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1">Adventure</a></td><td>3</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=5">Air Raiders</a></td><td>8</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=984">Alien</a></td><td>4</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=973">Amidar</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1005">Assault</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1965">Asterix</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=906">Asteroids</a></td><td>33</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=10">Atlantis</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1037">Atlantis II</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1008">Bank Heist</a></td><td>8</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=989">Basic Math</a></td><td>4</td><td>3</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=22">Battlezone</a></td><td>3</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=23">Beamrider</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=910">Berzerk</a></td><td>12</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=904">Blackjack</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=42">Bowling</a></td><td>3</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=45">Boxing</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=52">Breakout</a></td><td>12</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=957">Carnival</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=913">Casino</a></td><td>3</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=71">Centipede</a></td><td>2</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=80">Chopper Command</a></td><td>2</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=113">Crazy Climber</a></td><td>4</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=115">Crossbow</a></td><td>4</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=122">Dark Chambers</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=128">Defender</a></td><td>10</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=134">Demon Attack</a></td><td>4</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=149">Donkey Kong</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=153">Double Dunk</a></td><td>16</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=541">Swordquest: Earthworld</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1131">Elevator Action</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=163">Enduro</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=165">Entombed</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=157">E.T. The Extra-Terrestrial</a></td><td>3</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=182">Fishing Derby</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=183">Flag Capture</a></td><td>3</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=192">Freeway</a></td><td>8</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=199">Frostbite</a></td><td>2</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=918">Galaxian</a></td><td>9</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=217">Gopher</a></td><td>2</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=222">Gravitar</a></td><td>5</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=230">Hangman</a></td><td>4</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=233">Haunted House</a></td><td>9</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=228">H.E.R.O.</a></td><td>5</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=237">Human Cannonball</a></td><td>8</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=241">Ice Hockey</a></td><td>2</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=250">James Bond 007</a></td><td>2</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=252">Journey Escape</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=257">Kaboom!</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=894">Kangaroo</a></td><td>2</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=266">Kool Aid Man</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=261">Keystone Kapers</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=265">King Kong</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1130">KLAX</a></td><td>3</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=267">Krull</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=268">Kung Fu Master</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=271">Laser Gates</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=276">Lost Luggage</a></td><td>2</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1047">Mario Bros.</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=305">Miniature Golf</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=310">Montezuma’s Revenge</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=318">Mr. Do!</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=924">Ms. Pac-Man</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=323">Name This Game</a></td><td>3</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=931">Othello</a></td><td>3</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1031">Pac-Man</a></td><td>8</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=925">Phoenix</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=360">Pitfall!</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=359">Pitfall II: Lost Caverns</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=942">Video Olympics</a></td><td>2</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=372">Pooyan</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=376">Private Eye</a></td><td>5</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=377">Q*bert</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=409">River Raid</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=412">Road Runner</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=415">Robot Tank</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=424">Seaquest</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=431">Sir Lancelot</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=434">Skiing</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=450">Solaris</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=459">Space Invaders</a></td><td>16</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=469">Space War</a></td><td>12</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=506">Stargunner</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=941">Superman</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=535">Surround</a></td><td>2</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=555">Tennis</a></td><td>2</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=1931">Tetris</a></td><td>1</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=521">3D Tic-Tac-Toe</a></td><td>9</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=559">Time Pilot</a></td><td>1</td><td>3</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=571">Turmoil</a></td><td>9</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=569">Tron: Deadly Discs</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=572">Tutankham</a></td><td>4</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=574">Up n’ Down</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=576">Venture</a></td><td>1</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=578">Video Checkers</a></td><td>18</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=580">Video Chess</a></td><td>5</td><td>1</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=974">Video Cube</a></td><td>153</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=945">Video Pinball</a></td><td>2</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=598">Wizard of Wor</a></td><td>1</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=599">Word Zapper</a></td><td>24</td><td>4</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=603">Yars’ Revenge</a></td><td>4</td><td>2</td></tr>
+<tr><td><a href="https://atariage.com/software_page.php?SystemID=2600&amp;SoftwareLabelID=606">Zaxxon</a></td><td>4</td><td>1</td></tr>
+</tbody></table>
+<h1><a class="header" href="#visualization" id="visualization">Visualization</a></h1>
+<p>ALE offers screen display and audio capabilities via the Simple DirectMedia Layer (SDL).
+Instructions on how to install the SDL library, as well as enabling SDL support within ALE can be found in the section <a href="./getting-started.html">Getting Started</a>.
+Screen display can be enabled using the boolean option <code>display_screen</code> (default: <code>false</code>), 
+and sound playback using the boolean option <code>sound</code> (default: <code>false</code>).</p>
+<h2><a class="header" href="#recording-movies" id="recording-movies">Recording Movies</a></h2>
+<p>ALE now provides support for recording frames; if sound is enabled, it is also possible to record audio output.
+An example Python program is provided which will record both visual and audio output for a single episode of play. A similar example using C++ can be found at <a href="https://github.com/mgbellemare/Arcade-Learning-Environment/tree/master/examples/video-recording"><code>examples/video-recording</code></a>.</p>
+<h3><a class="header" href="#python-example" id="python-example">Python Example</a></h3>
+<pre><code class="language-py">import os
+import sys
+from random import randrange
+from ale_py import ALEInterface
+
+def main(rom_file, record_dir):
+    ale = ALEInterface()
+    ale.setInt('random_seed', 123)
+
+    # Enable screen display and sound output
+    ale.setBool('display_screen', True)
+    ale.setBool('sound', True)
+
+    # Specify the recording directory and the audio file path
+    ale.setString(&quot;record_screen_dir&quot;, record_dir) # Set the record directory
+    ale.setString(&quot;record_sound_filename&quot;,
+                    os.path.join(record_dir, &quot;sound.wav&quot;))
+
+    ale.loadROM(rom_file)
+
+    # Get the list of legal actions
+    legal_actions = ale.getLegalActionSet()
+    num_actions = len(legal_actions)
+
+    while not ale.game_over():
+      a = legal_actions[randrange(num_actions)]
+      ale.act(a)
+
+    print(f&quot;Finished episode. Frames can be found in {record_dir}&quot;)
+
+if __name__ == '__main__':
+    if len(sys.argv) &lt; 3:
+      print(f&quot;Usage: {sys.argv[0]} rom_file record_dir&quot;)
+      sys.exit()
+
+    rom_file = sys.argv[1]
+    record_dir = sys.argv[2]
+    main(rom_file)
+</code></pre>
+<p>Once frames and/or sound have been recorded, they may be joined into a video using an external program like <a href="https://www.ffmpeg.org">ffmpeg</a>. For example, you can run:</p>
+<pre><code class="language-bash"># -r frame_rate
+# -i input 
+# -f format
+# -c:a audio_codec
+# -c:v video_codec
+
+ffmpeg -r 60 \
+       -i record/%06d.png \
+       -i record/sound.wav \
+       -f mov \
+       -c:a mp3 \
+       -c:v libx264 \
+       agent.mov
+</code></pre>
+<p>The parameters may vary depending on the format, you can find more examples at <a href="https://github.com/mgbellemare/Arcade-Learning-Environment/tree/master/examples/video-recording"><code>examples/video-recording</code></a>.</p>
+<h1><a class="header" href="#faq" id="faq">FAQ</a></h1>
+<p>&nbsp;</p>
+<p>Q: <a href="faq.html#whats-the-difference-between-the-atari-environments-in-a-hrefhttpsgithubcomopenaigymopenai-gyma-and-the-ale">What’s the difference between the Atari environments in OpenAI Gym and the ALE?</a></p>
+<p>Q: <a href="faq.html#what-is-a-hrefhttpsgithubcomdeepmindxitarixitaria-should-i-use-it">What is Xitari? Should I use it?</a></p>
+<p>Q: <a href="faq.html#i-downloaded-ale-and-i-installed-it-successfully-but-i-cannot-find-any-rom-file-at-roms-do-i-have-to-get-them-somewhere-else">I downloaded ALE and I installed it successfully but I cannot find any ROM file at <code>roms/</code>. Do I have to get them somewhere else?</a></p>
+<p>Q: <a href="faq.html#i-want-to-be-able-to-extract-from-the-game-the-number-of-lives-my-agent-still-has-how-can-i-do-it">I want to be able to extract from the game the number of lives my agent still has. How can I do it?
+</a></p>
+<p>Q: <a href="faq.html#when-extracting-the-screen-i-realized-that-i-never-see-a-pixel-with-an-odd-value-however-the-pixel-is-represented-as-a-byte-shouldnt-it-be-up-to-255-with-odd-an-even-values">When extracting the screen I realized that I never see a pixel with an odd value. However, the pixel is represented as a byte. Shouldn’t it be up to 255 with odd an even values?
+</a></p>
+<p>Q: <a href="faq.html#can-i-extract-other-information-in-the-state-such-as-the-xy-position-of-sprites">Can I extract other state information such as the x,y position of sprites?</a></p>
+<hr />
+<p>&nbsp;</p>
+<h4><a class="header" href="#whats-the-difference-between-the-atari-environments-in-a-hrefhttpsgithubcomopenaigymopenai-gyma-and-the-ale" id="whats-the-difference-between-the-atari-environments-in-a-hrefhttpsgithubcomopenaigymopenai-gyma-and-the-ale">What’s the difference between the Atari environments in <a href="https://github.com/openai/gym">OpenAI Gym</a> and the ALE?</a></h4>
+<p>The environments provided in gym are built on the ALE. It just provides a different API to the ALE.</p>
+<h4><a class="header" href="#what-is-a-hrefhttpsgithubcomdeepmindxitarixitaria-should-i-use-it" id="what-is-a-hrefhttpsgithubcomdeepmindxitarixitaria-should-i-use-it">What is <a href="https://github.com/deepmind/xitari">Xitari</a>? Should I use it?</a></h4>
+<p>Xitari is a fork of the ALE around version 0.4. It added support for more games and some other minor changes. This work has now been upstreamed to the ALE and it’s recommended you use the ALE directly.</p>
+<h4><a class="header" href="#i-downloaded-ale-and-i-installed-it-successfully-but-i-cannot-find-any-rom-file-at-roms-do-i-have-to-get-them-somewhere-else" id="i-downloaded-ale-and-i-installed-it-successfully-but-i-cannot-find-any-rom-file-at-roms-do-i-have-to-get-them-somewhere-else">I downloaded ALE and I installed it successfully but I cannot find any ROM file at <code>roms/</code>. Do I have to get them somewhere else?</a></h4>
+<p>Yes. We do not distribute Atari 2600 ROMs. </p>
+<h4><a class="header" href="#i-want-to-be-able-to-extract-from-the-game-the-number-of-lives-my-agent-still-has-how-can-i-do-it" id="i-want-to-be-able-to-extract-from-the-game-the-number-of-lives-my-agent-still-has-how-can-i-do-it">I want to be able to extract from the game the number of lives my agent still has. How can I do it?</a></h4>
+<p>Previous versions of ALE did not support this. We started to support such feature since version 
+0.5.0, through the use of the function <code>lives()</code>. We strongly encourage RL researchers not utilize the loss of life signal for episode termination, and if you do to clearly report the setting used.</p>
+<h4><a class="header" href="#when-extracting-the-screen-i-realized-that-i-never-see-a-pixel-with-an-odd-value-however-the-pixel-is-represented-as-a-byte-shouldnt-it-be-up-to-255-with-odd-an-even-values" id="when-extracting-the-screen-i-realized-that-i-never-see-a-pixel-with-an-odd-value-however-the-pixel-is-represented-as-a-byte-shouldnt-it-be-up-to-255-with-odd-an-even-values">When extracting the screen I realized that I never see a pixel with an odd value. However, the pixel is represented as a byte. Shouldn’t it be up to 255 with odd an even values?</a></h4>
+<p>No, the Atari 2600 console (NTSC format) only supports 128 colours. Therefore, even though the colours are represented  in a byte, in fact only the seven most significant bits are used. Consequently you have
+to right-shift the colour byte by 1 bit to produce consecutively numbered colour values.</p>
+<h4><a class="header" href="#can-i-extract-other-state-information-such-as-the-xy-position-of-sprites" id="can-i-extract-other-state-information-such-as-the-xy-position-of-sprites">Can I extract other state information such as the x,y position of sprites?</a></h4>
+<p>No, but there is a project which allows you to do just that: <a href="https://github.com/mila-iqia/atari-representation-learning">AtariARI</a>.</p>
+<h1><a class="header" href="#citing-the-ale" id="citing-the-ale">Citing the ALE</a></h1>
+<p>If you use the ALE in your research, we ask that you please cite the following.</p>
+<p><em>M. G. Bellemare, Y. Naddaf, J. Veness and M. Bowling. The Arcade Learning Environment: An Evaluation Platform for General Agents, Journal of Artificial Intelligence Research, Volume 47, pages 253-279, 2013.</em></p>
+<pre><code class="language-bibtex">@Article{bellemare13arcade,
+  author = {{Bellemare}, M.~G. and {Naddaf}, Y. and {Veness}, J. and {Bowling}, M.},
+  title = {The Arcade Learning Environment: An Evaluation Platform for General Agents},
+  journal = {Journal of Artificial Intelligence Research},
+  year = &quot;2013&quot;,
+  month = &quot;jun&quot;,
+  volume = &quot;47&quot;,
+  pages = &quot;253--279&quot;,
+}
+</code></pre>
+<p>If you use the ALE with sticky actions (flag <code>repeat_action_probability</code>), or if
+you use the different game flavours (mode and difficulty switches), we ask you
+that you also cite the following:</p>
+<p><em>M. C. Machado, M. G. Bellemare, E. Talvitie, J. Veness, M. J. Hausknecht, M. Bowling. Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents,  Journal of Artificial Intelligence Research, Volume 61, pages 523-562, 2018.</em></p>
+<p>In BibTex format:</p>
+<pre><code class="language-bibtex">@Article{machado18arcade,
+  author = {Marlos C. Machado and Marc G. Bellemare and Erik Talvitie and Joel Veness and Matthew J. Hausknecht and Michael Bowling},
+  title = {Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents},
+  journal = {Journal of Artificial Intelligence Research},
+  volume = {61},
+  pages = {523--562},
+  year = {2018}
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
