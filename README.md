@@ -1,6 +1,6 @@
 ![Build Status](https://github.com/mgbellemare/Arcade-Learning-Environment/workflows/Build%20ALE/badge.svg)
 
-<img align="right" src="doc/manual/figures/ale.gif" width=50>
+<img align="right" src="docs/manual/figures/ale.gif" width=50>
 
 # The Arcade Learning Environment
 
@@ -68,46 +68,7 @@ or
 $ pip install --user .
 ```
 
-Getting the ALE to work on Visual Studio requires a bit of extra wrangling. You
-may wish to use IslandMan93's [Visual Studio port of the
-ALE.](https://github.com/Islandman93/Arcade-Learning-Environment)
-
-For more details and installation instructions, see the [manual](doc/manual/manual.pdf).
-To ask questions and discuss, please join the
-[ALE-users group](https://groups.google.com/forum/#!forum/arcade-learning-environment).
-
-## ALE releases
-
-Releases before v.0.5 are available for download in our previous
-[website](http://www.arcadelearningenvironment.org/). For the latest releases,
-please check our [releases
-page](https://github.com/mgbellemare/Arcade-Learning-Environment/releases).
-
-## List of command-line parameters
-
-Execute `./ale -help` for more details; alternatively, see documentation
-available at http://www.arcadelearningenvironment.org.
-
-```
--random_seed [n] -- sets the random seed; defaults to the current time
-
--game_controller [fifo|fifo_named] -- specifies how agents interact
-  with the ALE; see Java agent documentation for details
-
--config [file] -- specifies a configuration file, from which additional
-  parameters are read
-
--run_length_encoding [false|true] -- determine whether run-length encoding is
-  used to send data over pipes; irrelevant when an internal agent is
-  being used
-
--max_num_frames_per_episode [n] -- sets the maximum number of frames per
-  episode. Once this number is reached, a new episode will start. Currently
-  implemented for all agents when using pipes (fifo/fifo_named)
-
--max_num_frames [n] -- sets the maximum number of frames (independent of how
-  many episodes are played)
-```
+For more details and installation instructions, see the [manual](docs/manual/manual.pdf).
 
 ## Citing The Arcade Learning Environment
 
