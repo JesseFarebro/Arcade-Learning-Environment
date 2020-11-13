@@ -48,7 +48,7 @@ class ALEPythonInterface : public ALEInterface {
 
   inline py::tuple getScreenDims() {
     const ALEScreen& screen = ALEInterface::getScreen();
-    return py::make_tuple(screen.height(), screen.width());
+    return py::make_tuple(screen.width(), screen.height());
   }
 
   inline uint32_t getRAMSize() { return ALEInterface::getRAM().size(); }
