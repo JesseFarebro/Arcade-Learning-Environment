@@ -15,25 +15,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
-      name: Install Python ${{ matrix.python_version }}
+      name: Install Python
       with:
-        python-version: "3.7"
-    - name: Install dependencies
+        python-version: "3.9"
+    - name: Install cibuildwheel
       run: |
-        python -m pip install cibuildwheel==1.5.5
+        python -m pip install cibuildwheel==1.6.4
     - name: Build wheels
       run: |
         python -m cibuildwheel --output-dir wheelhouse
       env:
-        CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2010"
+        CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
         CIBW_BUILD: "cp3?-*"
         CIBW_SKIP: "*i686* *win32*"
         CIBW_TEST_REQUIRES: "pytest"
         CIBW_TEST_COMMAND: "pytest {project}"
         CIBW_ENVIRONMENT: "GITHUB_REF=${{ github.ref }}"
-        CIBW_ENVIRONMENT_WINDOWS: "GITHUB_REF=${{ github.ref }} ALE_PY_CMAKE_ARGS=\"-DCMAKE_TOOLCHAIN_FILE='${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake' -DVCPKG_TARGET_TRIPLET='x64-windows-static'\""
-        CIBW_BEFORE_BUILD_LINUX: "yum install -y zlib-devel"
-        CIBW_BEFORE_BUILD_WINDOWS: "vcpkg install zlib:x64-windows-static"
+        CIBW_ENVIRONMENT_WINDOWS: "GITHUB_REF=${{ github.ref }} VCPKG_DEFAULT_TRIPLET=\"x64-windows-static\" PATH=\"$PATH:$VCPKG_INSTALLATION_ROOT/installed/x64-windows-static/bin\""
+        CIBW_BEFORE_ALL_BUILD_LINUX: "yum install -y zlib-devel SDL2-devel"
+        CIBW_BEFORE_ALL_BUILD_WINDOWS: "vcpkg install zlib:x64-windows-static sdl2:x64-windows-static dlfcn-win32:x64-windows-static"
+        CIBW_BEFORE_ALL_BUILD_MACOS: "brew install sdl2"
     - uses: actions/upload-artifact@v1
       with:
         name: wheels

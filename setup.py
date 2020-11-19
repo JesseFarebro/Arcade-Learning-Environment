@@ -51,7 +51,8 @@ class BuildALEPythonInterface(_build_ext):
 
         cmake_args = [
             "-DCMAKE_BUILD_TYPE={}".format(config),
-            "-DUSE_SDL=OFF",
+            "-DSDL_SUPPORT=ON",
+            "-DSDL_DYNLOAD=ON",
             "-DBUILD_CPP_LIB=OFF",
             "-DBUILD_PYTHON=ON",
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(config.upper(), libdir),

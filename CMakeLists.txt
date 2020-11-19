@@ -1,6 +1,16 @@
 cmake_minimum_required (VERSION 3.14)
 
-project(ale VERSION 0.6.1
+# VCPKG configuration from environment variables
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
+if(DEFINED ENV{VCPKG_INSTALLATION_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake"
+    CACHE STRING "")
+endif()
+
+project(ale VERSION 0.6.1.20201120
             DESCRIPTION "The Arcade Learning Environment (ALE) - a platform for AI research."
             HOMEPAGE_URL "http://www.arcadelearningenvironment.org"
             LANGUAGES CXX)
