@@ -248,6 +248,16 @@ def test_state_pickle(tetris):
     assert tetris.cloneState() == state
     os.remove(file)
 
+def test_display_screen(ale, test_rom_path):
+    if ale_py.SDL_SUPPORT:
+        os.putenv("SDL_VIDEODRIVER", "dummy")
+        ale.setBool("display_screen", True)
+        ale.setBool("sound", False)
+        ale.loadROM(test_rom_path)
+        for _ in range(10):
+            ale.act(0)
+        os.unsetenv("SDL_VIDEODRIVER")
+        assert True
 
 def test_set_logger(ale):
     ale.setLoggerMode(ale_py.LoggerMode.Info)

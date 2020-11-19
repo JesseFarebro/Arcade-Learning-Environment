@@ -7,33 +7,44 @@ on:
 
 jobs:
   build:
-    name: Build ale-py on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Build ale-py on ${{ matrix.config.os }}
+    runs-on: ${{ matrix.config.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        config: [
+          #{"os": "ubuntu-latest", "deps": ["zlib", "sdl2"], "triplet": "x64-linux-mixed"},
+          {"os": "windows-latest", "deps": ["zlib", "sdl2", "dlfcn-win32"], "triplet": "x64-windows"},
+          {"os": "macos-latest", "deps": ["zlib", "sdl2"], "triplet": "x64-osx-mixed"}
+        ]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
-      name: Install Python ${{ matrix.python_version }}
+      name: Install Python
       with:
-        python-version: "3.7"
-    - name: Install dependencies
+        python-version: "3.9"
+    - name: "Update vcpkg repository"
       run: |
-        python -m pip install cibuildwheel==1.5.5
+        git -C "$VCPKG_INSTALLATION_ROOT" fetch
+        git -C "$VCPKG_INSTALLATION_ROOT" reset --hard origin/master
+    - name: Install cibuildwheel
+      run: |
+        python -m pip install cibuildwheel==1.7.0
     - name: Build wheels
       run: |
         python -m cibuildwheel --output-dir wheelhouse
       env:
+        CIBW_BUILD_VERBOSITY: 2
         CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2010"
-        CIBW_BUILD: "cp3?-*"
+        CIBW_BUILD: "cp36-* cp37-* cp38-* cp39-*"
         CIBW_SKIP: "*i686* *win32*"
         CIBW_TEST_REQUIRES: "pytest"
         CIBW_TEST_COMMAND: "pytest {project}"
-        CIBW_ENVIRONMENT: "GITHUB_REF=${{ github.ref }}"
-        CIBW_ENVIRONMENT_WINDOWS: "GITHUB_REF=${{ github.ref }} ALE_PY_CMAKE_ARGS=\"-DCMAKE_TOOLCHAIN_FILE='${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake' -DVCPKG_TARGET_TRIPLET='x64-windows-static'\""
-        CIBW_BEFORE_BUILD_LINUX: "yum install -y zlib-devel"
-        CIBW_BEFORE_BUILD_WINDOWS: "vcpkg install zlib:x64-windows-static"
+        CIBW_ENVIRONMENT: "GITHUB_REF=${{ github.ref }} VCPKG_DEFAULT_TRIPLET=${{ matrix.config.triplet }}"
+        CIBW_BEFORE_ALL: "vcpkg install ${{ join(matrix.config.deps, ' ') }} --triplet ${{ matrix.config.triplet }} --overlay-triplets cmake/custom-triplets"
+        CIBW_BEFORE_BUILD: "pip install cmake"
     - uses: actions/upload-artifact@v1
       with:
         name: wheels
