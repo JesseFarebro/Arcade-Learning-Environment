@@ -1,6 +1,6 @@
 option(BUILD_PYTHON_LIB "Build Python Interface" ON)
 option(BUILD_CPP_LIB "Build C++ Interface" ON)
-option(USE_SDL "Build with SDL support" OFF)
+option(SDL_SUPPORT "Enable SDL support" ON)
 
 # Include src/ and cmake binary directory (for version.hpp)
 include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
@@ -29,14 +29,25 @@ target_link_libraries(ale
     ZLIB::ZLIB
     Threads::Threads)
 
-if (USE_SDL)
-  target_compile_definitions(ale
-    PUBLIC
-      -D__USE_SDL
-      -DSOUND_SUPPORT)
-  find_package(SDL REQUIRED)
-  target_include_directories(ale PUBLIC ${SDL_INCLUDE_DIR})
-  target_link_libraries(ale PUBLIC ${SDL_LIBRARY})
+if (SDL_SUPPORT)
+  option(SDL_DYNLOAD "Dynamically load SDL" ON)
+  find_package(SDL2 REQUIRED)
+
+  if (WIN32)
+    find_package(dlfcn-win32 REQUIRED)
+    target_link_libraries(ale PRIVATE dlfcn-win32::dl)
+  endif()
+
+  # VCPKG doesn't include SDL2_INCLUDE_DIRS
+  if (VCPKG_TOOLCHAIN)
+    find_path(SDL2_INCLUDE_DIRS SDL.h PATH_SUFFIXES SDL2)
+  endif()
+
+  target_compile_definitions(ale PUBLIC SDL_SUPPORT)
+  target_link_libraries(ale
+    PRIVATE
+      $<$<NOT:$<BOOL:${SDL_DYNLOAD}>>:SDL2::SDL2>)
+  target_include_directories(ale PRIVATE ${SDL2_INCLUDE_DIRS})
 endif()
 
 # Add submodules
@@ -69,7 +80,7 @@ endif()
 
 # Python Interface
 if (BUILD_PYTHON_LIB)
-  find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+  find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
 
   include(FetchContent)
   FetchContent_Declare(
@@ -84,6 +95,11 @@ if (BUILD_PYTHON_LIB)
   set_target_properties(ale-py PROPERTIES OUTPUT_NAME ale_py
                                           PREFIX "${PYTHON_MODULE_PREFIX}"
                                           SUFFIX "${PYTHON_MODULE_EXTENSION}")
+  if(SDL_SUPPORT AND SDL_DYNLOAD)
+    add_custom_command (TARGET ale-py POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:SDL2::SDL2> $<TARGET_FILE_DIR:ale-py>)
+  endif()
 endif()
 
 

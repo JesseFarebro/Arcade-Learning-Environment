@@ -51,13 +51,14 @@ class BuildALEPythonInterface(_build_ext):
 
         cmake_args = [
             "-DCMAKE_BUILD_TYPE={}".format(config),
-            "-DUSE_SDL=OFF",
+            "-DSDL_SUPPORT=ON",
+            "-DSDL_DYNLOAD=ON",
             "-DBUILD_CPP_LIB=OFF",
-            "-DBUILD_PYTHON=ON",
+            "-DBUILD_PYTHON_LIB=ON",
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(config.upper(), libdir),
             "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}".format(config.upper(), libdir),
             "-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}".format(config.upper(), libdir),
-            "-DPYTHON_EXECUTABLE={}".format(sys.executable),
+            "-DPython3_EXECUTABLE={}".format(sys.executable),
         ]
         build_args = [
             "--config",
@@ -149,8 +150,8 @@ def _parse_version(filename):
             version_tag
         ), "Tag is invalid semver. {} must conform to semver.".format(version_tag)
         assert (
-            version_tag == version
-        ), "Tagged version must match VERSION but got:\n\tVERSION: {}\n\tTAG: {}".format(
+            version_tag.startswith(version)
+        ), "Tagged version must begin with VERSION but got:\n\tVERSION: {}\n\tTAG: {}".format(
             version, tagged_version
         )
         version_suffix = ""
