@@ -62,6 +62,9 @@ StellaEnvironment::StellaEnvironment(OSystem* osystem, RomSettings* settings)
     m_frame_skip = 1;
   }
 
+  int random_seed = m_osystem->settings().getInt("random_seed");
+  m_rng.seed(random_seed);
+
   // If so desired, we record all emulated frames to a given directory
   std::string recordDir = m_osystem->settings().getString("record_screen_dir");
   if (!recordDir.empty()) {
@@ -159,16 +162,14 @@ reward_t StellaEnvironment::act(Action player_a_action,
   // Total reward received as we repeat the action
   reward_t sum_rewards = 0;
 
-  Random& rng = m_osystem->rng();
-
   // Apply the same action for a given number of times... note that act() will refuse to emulate
   //  past the terminal state
   for (size_t i = 0; i < m_frame_skip; i++) {
     // Stochastically drop actions, according to m_repeat_action_probability
-    if (rng.nextDouble() >= m_repeat_action_probability)
+    if (m_rng.nextDouble() >= m_repeat_action_probability)
       m_player_a_action = player_a_action;
     // @todo Possibly optimize by avoiding call to rand() when player B is "off" ?
-    if (rng.nextDouble() >= m_repeat_action_probability)
+    if (m_rng.nextDouble() >= m_repeat_action_probability)
       m_player_b_action = player_b_action;
 
     // If so desired, request one frame's worth of sound (this does nothing if recording

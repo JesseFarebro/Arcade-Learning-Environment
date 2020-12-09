@@ -94,6 +94,8 @@ Settings::Settings(OSystem* osystem) : myOSystem(osystem) {
     setInternal("mwheel", "4");
     setInternal("autoslot", "false");
 
+    setInternal("emulator_random_seed", "0");
+
     setDefaultSettings();
 }
 

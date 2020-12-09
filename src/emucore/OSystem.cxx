@@ -169,16 +169,10 @@ bool OSystem::create()
 }
 
 void OSystem::resetRNGSeed() {
-
-  // We seed the random number generator. The 'time' seed is somewhat redundant, since the
-  // rng defaults to time. But we'll do it anyway.
-  if (mySettings->getInt("random_seed") == 0) {
-    myRandGen.seed((uInt32)time(NULL));
-  } else {
-    int seed = mySettings->getInt("random_seed");
-    assert(seed >= 0);
-    myRandGen.seed((uInt32)seed);
-  }
+  // We seed the emulator's random number generator with a fixed seed.
+  // This guarantees determinism for games that have their own RNG.
+  int seed = mySettings->getInt("emulator_random_seed");
+  myRandGen.seed(seed);
 }
 
 bool OSystem::saveState(Serializer& out) {

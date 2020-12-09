@@ -25,6 +25,7 @@
 #include "environment/stella_environment_wrapper.hpp"
 #include "emucore/Event.hxx"
 #include "emucore/OSystem.hxx"
+#include "emucore/Random.hxx"
 #include "common/Constants.h"
 #include "games/RomSettings.hpp"
 #include "common/Log.hpp"
@@ -99,7 +100,7 @@ class StellaEnvironment {
   int getFrameNumber() const { return m_state.getFrameNumber(); }
   int getEpisodeFrameNumber() const { return m_state.getEpisodeFrameNumber(); }
 
-  Random& getSystemRng() { return m_osystem->rng(); }
+  Random& getSystemRng() { return m_rng; }
 
   // Returns the current difficulty switch setting in use by the environment.
   difficulty_t getDifficulty() const { return m_state.getDifficulty(); }
@@ -134,6 +135,8 @@ class StellaEnvironment {
   RomSettings* m_settings;
   PhosphorBlend m_phosphor_blend; // For performing phosphor colour averaging, if so desired
   std::string m_cartridge_md5; // Necessary for saving and loading emulator state
+
+  Random m_rng; // Environment RNG, this is separate from emulator RNG in OSystem
 
   std::stack<ALEState> m_saved_states; // States are saved on a stack
 
