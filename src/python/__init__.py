@@ -43,3 +43,6 @@ except importlib_metadata.PackageNotFoundError:
 
 # Import native shared library
 from ._ale_py import *
+
+# Exported symbols
+__all__ = ["ALEInterface", "ALEState", "Action", "LoggerMode", "__version__"]
