@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         config: [
-          {"os": "ubuntu-latest", "deps": ["zlib"], "triplet": "x64-linux"},
-          {"os": "windows-latest", "deps": ["zlib"], "triplet": "x64-windows"},
-          {"os": "macos-latest", "deps": ["zlib"], "triplet": "x64-osx"}
+          {"os": "ubuntu-latest", "deps": ["zlib", "sdl2"], "triplet": "x64-linux-mixed"},
+          {"os": "windows-latest", "deps": ["zlib", "sdl2"], "triplet": "x64-windows"},
+          {"os": "macos-latest", "deps": ["zlib", "sdl2"], "triplet": "x64-osx-mixed"}
         ]
     runs-on: ${{ matrix.config.os }}
     steps:
@@ -39,7 +39,7 @@ jobs:
         CIBW_TEST_REQUIRES: "pytest"
         CIBW_TEST_COMMAND: "pytest {project}"
         CIBW_ENVIRONMENT: "ALE_BUILD_VERSION=${{ env.ALE_BUILD_VERSION }} VCPKG_DEFAULT_TRIPLET=${{ matrix.config.triplet }}"
-        CIBW_BEFORE_ALL: "vcpkg install ${{ join(matrix.config.deps, ' ') }} --triplet ${{ matrix.config.triplet }}"
+        CIBW_BEFORE_ALL: "vcpkg install ${{ join(matrix.config.deps, ' ') }} --overlay-triplets cmake/custom-triplets --triplet ${{ matrix.config.triplet }}"
 
     - uses: actions/upload-artifact@v1
       with:
