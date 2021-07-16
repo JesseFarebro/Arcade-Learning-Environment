@@ -71,9 +71,9 @@ class ALEPythonInterface : public ALEInterface {
 PYBIND11_MODULE(ale_py, m) {
   m.attr("__version__") = py::str(ALE_VERSION);
 #ifdef __USE_SDL
-  m.attr("SDL") = py::bool_(true);
+  m.attr("SDL_SUPPORT") = py::bool_(true);
 #else
-  m.attr("SDL") = py::bool_(false);
+  m.attr("SDL_SUPPORT") = py::bool_(false);
 #endif
 
   py::enum_<ale::Action>(m, "Action")
