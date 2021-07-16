@@ -194,7 +194,7 @@ def test_save_screen_png(tetris):
 
 
 def test_is_rom_supported(ale, test_rom_path):
-    assert ale.isSupportedRom(test_rom_path)
+    assert ale.isSupportedRom(test_rom_path) is not None
     with pytest.raises(RuntimeError) as exc_info:
         ale.isSupportedRom("notfound")
 
@@ -238,16 +238,28 @@ def test_state_pickle(tetris):
 
     state = tetris.cloneState()
     file = os.path.join(tempfile.gettempdir(), "ale-state.p")
-    data = pickle.dump(state, open(file, "wb"))
+    with open(file, "wb") as fp:
+        data = pickle.dump(state, fp)
 
     tetris.reset_game()
     assert tetris.cloneState() != state
-    pickeled = pickle.load(open(file, "rb"))
+    with open(file, "rb") as fp:
+        pickeled = pickle.load(fp)
     assert pickeled == state
     tetris.restoreState(pickeled)
     assert tetris.cloneState() == state
     os.remove(file)
 
+def test_display_screen(ale, test_rom_path):
+    if ale_py.SDL_SUPPORT:
+        os.environ["SDL_VIDEODRIVER"] = "dummy"
+        ale.setBool("display_screen", True)
+        ale.setBool("sound", False)
+        ale.loadROM(test_rom_path)
+        for _ in range(10):
+            ale.act(0)
+        del os.environ['SDL_VIDEODRIVER']
+        assert True
 
 def test_set_logger(ale):
     ale.setLoggerMode(ale_py.LoggerMode.Info)

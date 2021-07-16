@@ -49,6 +49,8 @@ class CMakeBuild(build_ext):
             f"-DCMAKE_BUILD_TYPE={config}",
             f"-DPython3_EXECUTABLE={sys.executable}",
             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}",
+            "-DSDL_SUPPORT=ON",
+            "-DSDL_DYNLOAD=ON",
             "-DBUILD_CPP_LIB=OFF",
             "-DBUILD_PYTHON_LIB=ON"
         ]
