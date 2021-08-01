@@ -18,7 +18,7 @@
 #include <iostream>
 #include <ale_interface.hpp>
 
-#ifdef __USE_SDL
+#ifdef SDL_SUPPORT
 #include <SDL.h>
 #endif
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
   //The default is already 0.25, this is just an example
   ale.setFloat("repeat_action_probability", 0.25);
 
-#ifdef __USE_SDL
+#ifdef SDL_SUPPORT
   ale.setBool("display_screen", true);
   ale.setBool("sound", true);
 #endif
