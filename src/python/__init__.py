@@ -42,7 +42,7 @@ except importlib_metadata.PackageNotFoundError:
     __version__ = "unknown"
 
 # Import native shared library
-from ._ale_py import *
+from ale_py._ale_py import *
 
 # Exported symbols
 __all__ = ["ALEInterface", "ALEState", "Action", "LoggerMode", "__version__"]
