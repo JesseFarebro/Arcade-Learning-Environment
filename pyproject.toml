@@ -1,8 +1,32 @@
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=58",
     "wheel",
-    "cmake>=3.14",
+    "cmake>=3.18",
     "ninja; sys_platform != 'win32' and platform_machine != 'arm64'",
 ]
 build-backend = "setuptools.build_meta"
+
+
+[tool.cibuildwheel]
+skip = "*-win32 *-manylinux_i686 pp*"
+
+build-frontend = "build"
+
+test-extras = ["test"]
+test-command = "pytest {project}"
+
+before-all = """
+    vcpkg install zlib sdl2
+        --overlay-triplets cmake/custom-triplets
+        --feature-flags=-compilertracking
+"""
+
+manylinux-x86_64-image = "ghcr.io/jessefarebro/manylinux2014-vcpkg"
+
+[tool.cibuildwheel.environment]
+ALE_BUILD_VERSION = "$ALE_BUILD_VERSION"
+VCPKG_DEFAULT_TRIPLET = "$VCPKG_DEFAULT_TRIPLET"
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.15"
