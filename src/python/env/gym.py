@@ -416,3 +416,7 @@ class AtariEnv(gym.Env, utils.EzPickle):
         Return Gym's observation space.
         """
         return self._obs_space
+
+    @property
+    def render_mode(self) -> str:
+        return self._render_mode
