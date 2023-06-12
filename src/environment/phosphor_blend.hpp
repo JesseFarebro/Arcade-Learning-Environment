@@ -17,16 +17,24 @@
 #ifndef __PHOSPHOR_BLEND_HPP__
 #define __PHOSPHOR_BLEND_HPP__
 
+#include <cstdint>
+
 #include "emucore/OSystem.hxx"
-#include "environment/ale_screen.hpp"
+#include "environment/frame_processor.hpp"
 
 namespace ale {
 
-class PhosphorBlend {
+class PhosphorBlend : public FrameProcessor {
  public:
-  PhosphorBlend(stella::OSystem*);
-
-  void process(ALEScreen& screen);
+  PhosphorBlend(ColourPalette& palette);
+  void processGrayscale(
+    stella::MediaSource& media,
+    uint8_t* out
+  );
+  void processRGB(
+    stella::MediaSource& media,
+    uint8_t* out
+  );
 
  private:
   void makeAveragePalette();
@@ -36,8 +44,6 @@ class PhosphorBlend {
   uint8_t rgbToNTSC(uint32_t rgb);
 
  private:
-  stella::OSystem* m_osystem;
-
   uint8_t m_rgb_ntsc[64][64][64];
 
   uint32_t m_avg_palette[256][256];
